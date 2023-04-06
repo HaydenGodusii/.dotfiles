@@ -1,34 +1,32 @@
 #!/bin/bash
 #Runs the code below
 
-vimrcEX=$(find "$HOME" -type f -name ".vimrc")
+os=$(uname)
 
-#checks if the system is running linux
-if (("$(uname)" != "Linux"))
+FILE=~/.vimrc
+touch ~/.vimrc
+
+#when this if statement runs, it makes sure that the system is linux
+if [[ $os != "Linux" ]];
 then
-	echo "Error" >> linux.setup.log
-	#prints out the message error
-
+	echo "Error input" >> linuxsetup.log
 	exit
-	#exits
 else 
 
-	mkdir ~/.TRASH
-	#makes a .TRASH directory
 
-# If .vimrc is found, we set it equal to a variable for which holds the name of it and then we change change its name to '.bup vimrc'
+mkdir -p ~/.TRASH 
 
- if (("$(find .vimrc)" == "(*.vimrc)"))
-    	then	#checks if there is a .vimrc directory
+#creates the hidden trash directory if its not been made yet
 
-            	mv .vimrc .bup_vimrc
-            	#renames the .vim rc directory
+if [[ -f $FILE ]];
+then
 
-            	echo "We changed .vimrc to .bup_vimrc"
-            	#echoes that we changed the name of .vimrc
+mv $FILE ~/.bup_vimrc 
 
-		exit
-	fi
+echo ".vimrc file was changed to .bup_vimrc" >> linuxsetup.log
+
+cat ~/.dotfiles/etc/vimrc > ~/.vimrc
+
+echo "source ~/.dotfiles/etc/bashrc_custom" >> ~/.bashrc
 fi
-
-
+fi
